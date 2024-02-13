@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MGGJ Countdown</title>
+</head>
+<body>
+    <div class="time" id="time">
+        00:00:00
+    </div>
+</body>
+</html>
+
+<script>
+    // Time logic
+    const time = document.getElementById("time");
+
+    const targetTime = Date.parse("15 Mar 2024 00:00:00 UTC+9");
+
+    // Repeat every 1 second
+    setInterval(function()
+    {
+        const curTime = Date.now();
+
+        const finalTime = new Date(targetTime-curTime);
+
+        // Calculate time
+        let seconds = finalTime.getTime() * 0.001;
+        let minutes = seconds * (1/60);
+        let hours = minutes * (1/60);
+        minutes = minutes % 60;
+        seconds = seconds % 60;
+
+        // Add trailing 0 for values under 10
+        let secString = parseInt(seconds);
+        if(seconds < 10) secString = "0" + secString;
+        let minString = parseInt(minutes);
+        if(minutes < 10) minString = "0" + minString;
+        let hourString = parseInt(hours);
+        if(hours < 10) hourString = "0" + hourString;
+
+        // Create final time string
+        const remainingTime = hourString+":"+minString+":"+secString;
+
+        // Display final time
+        time.innerHTML = remainingTime;
+
+    }, 1000)
+</script>
+
+<style>
+    body
+    {
+        background-color: black;
+        color: white;
+
+        margin: 0;
+    }
+    .time
+    {
+        text-align: center;
+        font-size: min(20vw, 100vh);
+        line-height: 100vh;
+    }
+</style>
