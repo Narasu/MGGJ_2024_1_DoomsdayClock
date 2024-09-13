@@ -13,6 +13,8 @@
 </html>
 
 <script>
+    let showDays = true;
+
     // Time logic
     const time = document.getElementById("time");
 
@@ -25,10 +27,19 @@
 
         const finalTime = new Date(targetTime-curTime);
 
+        let isNegative = false;
+
         // Calculate time
         let seconds = finalTime.getTime() * 0.001;
+        
+        isNegative = seconds < 0; // Check if time is negative
+        seconds = Math.abs(seconds);
+
         let minutes = seconds * (1/60);
         let hours = minutes * (1/60);
+        let days = hours * (1/24);
+        if(days < 1) showDays = false;
+        if(showDays) hours = hours % 24;
         minutes = minutes % 60;
         seconds = seconds % 60;
 
@@ -39,9 +50,17 @@
         if(minutes < 10) minString = "0" + minString;
         let hourString = parseInt(hours);
         if(hours < 10) hourString = "0" + hourString;
+        
+        let dayString = Math.floor(days);
+        if(days < 10) dayString = "0" + dayString;
 
         // Create final time string
-        const remainingTime = hourString+":"+minString+":"+secString;
+        let remainingTime = hourString+":"+minString+":"+secString;
+
+        if(showDays) remainingTime = dayString + ":" + remainingTime;
+        if(isNegative) remainingTime = "-" + remainingTime;
+
+        if(remainingTime.length > 14) time.style.fontSize = "min(10vw, 100vh)";
 
         // Display final time
         time.innerHTML = remainingTime;
@@ -60,7 +79,7 @@
     .time
     {
         text-align: center;
-        font-size: min(20vw, 100vh);
+        font-size: min(15vw, 100vh);
         line-height: 100vh;
     }
 </style>
